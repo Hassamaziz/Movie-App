@@ -29,3 +29,24 @@ h2{
         border-radius: 10px;
         min-height: 100px;
 }
+button{
+  background-color: #4b5362;
+  color: #f3f3f3;
+  margin-top: 10px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover{
+  background-color:red;
+}
+button:disabled{
+  background-color: #4b5362;
+  color: #f3f3f3;
+  cursor: not-allowed;
+}
+button:disabled:hover{
+  background-color: #4b5362;
+  color: #f3f3f3;
+}
