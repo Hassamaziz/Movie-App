@@ -2,9 +2,16 @@ import React from 'react'
 
 const App = () => {
   return (
-    <div>
-      
-    </div>
+    <main>
+    <div className='pattern'/>
+   <div className='wrapper'>
+      <header>
+      <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Watching Without the Hassle!</h1>
+      <p>Search</p>
+      </header>
+   
+   </div>
+    </main>
   )
 }
 
