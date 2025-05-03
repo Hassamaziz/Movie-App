@@ -65,8 +65,9 @@ body{
 }
 .movieCard h2{
     color: #ff3838;
-    letter-spacing: 1px;
-    margin: 0px;
+    font-size: 26px;
+
+    margin-bottom: 5px;
 }
 .movieCard p{
     line-height: 20px;
