@@ -18,38 +18,45 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [isloading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (pageNumber = 1, query = "") => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      const endpoint = `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
+      const endpoint = query
+        ? `${API_BASE_URL}/search/movie?include_adult=false&language=en-US&page=1&query=${encodeURIComponent(query)}`
+        : `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=popularity.desc`;
       const response = await fetch(endpoint, API_OPTIONS);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log(data);
-      
 
-      if (data.response === "False") {
-        setErrorMessage(data.Error || "Movie not found");
-        setMovieList([]);
-        return;
-      }
-      setMovieList(data.results || []);
-      setIsLoading(false);
+      setMovieList((prev) => {
+        const existingIds = new Set(prev.map((movie) => movie.id));
+        const newMovies = data.results.filter(
+          (movie) => !existingIds.has(movie.id)
+        );
+        return pageNumber === 1 ? data.results : [...prev, ...newMovies];
+      });
     } catch (error) {
-      console.log("Error fetching Movies" + error);
+      console.log("Error fetching Movies", error);
       setErrorMessage("Error fetching movies. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleLoadMore = async () => {
+    const nextPage = page + 1;
+    await fetchMovies(nextPage);
+    setPage(nextPage);
+  };
+
   useEffect(() => {
-    fetchMovies();
-  }, []);
+    fetchMovies(1, searchTerm);
+  }, [searchTerm]);
 
   return (
     <main>
@@ -79,6 +86,17 @@ const App = () => {
                 </li>
               ))}
             </ul>
+          )}
+
+          {!isloading && !errorMessage && movieList.length > 0 && (
+            <div className="mt-6 text-center">
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                onClick={handleLoadMore}
+              >
+                Show More
+              </button>
+            </div>
           )}
         </section>
       </div>
