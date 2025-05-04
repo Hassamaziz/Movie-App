@@ -29,7 +29,6 @@ const App = () => {
     1000,
     [searchTerm]
   );
-
   const fetchMovies = async (pageNumber = 1, query = "") => {
     setIsLoading(true);
     setErrorMessage("");
@@ -59,7 +58,6 @@ const App = () => {
       setIsLoading(false);
     }
   };
-
   const handleLoadMore = async () => {
     const nextPage = page + 1;
     await fetchMovies(nextPage);
