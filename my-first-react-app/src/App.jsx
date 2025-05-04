@@ -64,6 +64,7 @@ const App = () => {
     setPage(nextPage);
   };
 
+  
   useEffect(() => {
     fetchMovies(1, debouncedSearchTerm);
   }, [debouncedSearchTerm]);
