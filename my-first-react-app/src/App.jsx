@@ -3,6 +3,9 @@ import { useDebounce } from "react-use";
 import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
+import { updateSearchCount } from "./appwrite";
+
+
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -51,6 +54,13 @@ const App = () => {
         );
         return pageNumber === 1 ? data.results : [...prev, ...newMovies];
       });
+
+      if (query && data.results.length > 0) {
+        const movie = data.results[0];
+        await updateSearchCount(query, data.results[0]);
+        console.log("Search term updated in Appwrite:", query);
+      }
+     
     } catch (error) {
       console.log("Error fetching Movies", error);
       setErrorMessage("Error fetching movies. Please try again later.");
@@ -64,7 +74,7 @@ const App = () => {
     setPage(nextPage);
   };
 
-  
+
   useEffect(() => {
     fetchMovies(1, debouncedSearchTerm);
   }, [debouncedSearchTerm]);
