@@ -110,6 +110,7 @@
       @apply rounded-lg h-full w-auto;
     }
 
+    
     & h3 {
       @apply text-white font-bold text-base line-clamp-1;
     }
